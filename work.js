@@ -37,13 +37,14 @@ function miliseconds(hrs,min)
 {
     return((hrs*60*60+min*60)*1000);
 }
-var Start = new Date(2017, 7, 1, 0, 0, 0, 0).getTime();
-var End = new Date(2017, 8, 1, 0, 0, 0, 0).getTime() - 1;
-var Interval = miliseconds(1, 00);
+
+var Start = new Date(2017, 7, 14, 17, 0, 0, 0).getTime();
+var End = new Date(2017, 7, 14, 22, 0, 0, 0).getTime() - 1;
+var Interval = miliseconds(0, 15);
 
 function getRange(Start, End, Interval)
 {
-	var callLimit = 100;
+	var callLimit = 10;
 	var checkLimit = Math.floor((End - Start) / Interval);
 	if (checkLimit > callLimit)
 	{
