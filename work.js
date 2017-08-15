@@ -1,4 +1,4 @@
-function callApi(startTime, endTime) {
+function callApi(bucketName, startTime, endTime) {
 	const http = require('http');
 	const aws4 = require('aws4');
 
@@ -6,7 +6,6 @@ function callApi(startTime, endTime) {
 	const accessKeyId = 'accessKey1';
 	const secretAccessKey = 'verySecretKey1';
 	const token = '';
-	const bucketName = 'utapi-bucket';
 	// Get the start and end times for a range of one month.
 	const requestBody = JSON.stringify({
 		buckets: [bucketName],
@@ -26,7 +25,7 @@ function callApi(startTime, endTime) {
 	const request = http.request(options, response => {
 		const body = [];
 		response.on('data', chunk => body.push(chunk));
-		response.on('end', () => process.stdout.write(`${body.join('')}\n`));
+		response.on('end', () => process.stdout.write(`${body.join('')}\n\n\n`));
 	});
 	request.on('error', e => process.stdout.write(`error: ${e.message}\n`));
 	request.write(requestBody);
@@ -41,10 +40,11 @@ function miliseconds(hrs,min)
 var Start = new Date(2017, 7, 14, 17, 0, 0, 0).getTime();
 var End = new Date(2017, 7, 14, 22, 0, 0, 0).getTime() - 1;
 var Interval = miliseconds(0, 15);
+const bucketName = 'utapi-bucket';
 
 function getRange(Start, End, Interval)
 {
-	var callLimit = 10;
+	var callLimit = 2;
 	var checkLimit = Math.floor((End - Start) / Interval);
 	if (checkLimit > callLimit)
 	{
@@ -54,7 +54,7 @@ function getRange(Start, End, Interval)
 	var next = Start + Interval - 1;
 	for (var i = Start; i < End; i += Interval)
 	{
-		callApi(i, next);
+		callApi(bucketName, i, next);
 		next += Interval;
 	}
 }
