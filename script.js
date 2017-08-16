@@ -350,4 +350,8 @@ function getRange(Start, End, Interval)
 	}
 }
 
+function printObj(obj){
+	console.log(obj);
+}
+
 getRange(Start, End, Interval);
