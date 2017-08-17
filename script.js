@@ -1,3 +1,11 @@
+/**
+ * @Author: Anhelina Shulha <anhelinashulha>
+ * @Date:   Aug-13-2017
+ * @Email:  anhelina.shulha@gmail.com
+ * @Filename: script.js
+ * @Last modified by:   anhelinashulha
+ * @Last modified time: Aug-16-2017
+ */
 
 "use strict";
 
@@ -329,116 +337,127 @@ let data7 =
 		"bucketName":"utapi-bucket"
 	};
 
-let arr = [data1, data2, data3, data4, data5, data6, data7, data2, data3, data1, data5, data1, data2, data7, data6, data5, data2, data3, data1, data5, data1, data2, data7, data6, data5,data2, data3, data1, data5, data1, data2, data7, data6, data5];
+let arr = [data1, data2, data3, data4, data5, data6, data7, data2, data3];
+ // data1, data5, data1, data2, data7, data6, data5, data2];
+// data3, data1, data5, data1, data2, data7, data6, data5,data2, data3, data1, data5, data1, data2, data7, data6, data5];
 
 function buildChart(arr) {
 
-	let	width = 500,
-		height = 300,
+	let margin = { top: 0, right: 0, bottom: 0, left: 50 };
+
+	let	width = 350 - margin.right - margin.left,
+		height = 300 - margin.top - margin.bottom,
 		animateDuration = 700,
 		animateDelay = 30;
 
 	let incomingBytesArr = arr.map(function(i) { return i.incomingBytes; });
-	let dates = arr.map(function(i) { return i.timeRange[0]; })
-	// console.log(incomingBytesArr);
 
-	var tooltip = d3.select("body").append('div')
-					.style("position", "absolute")
-					.style("background", "#f4f4f4")
-					.style("padding", "5 15px")
-					.style("border", "1px #333 solid")
-					.style("border-radius", "5 px")
-					.style("opacity", "0")
+	let datesStart = arr.map(function(i) {
+		let monthNames = ["Jan", "Feb", "Mar", "Apr", "May", "Jun",
+			"Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+		let date = new Date(i.timeRange[0]);
+		let day = date.getDate();
+			if (day < 10) day = "0" + day;
+		let hours = date.getHours();
+			if (hours < 10) hours = "0" + hours;
+		let minutes = date.getMinutes();
+			if (minutes < 10) minutes = "0" + minutes;
+		return monthNames[date.getMonth()] + " " + day + " " + hours + ":" + minutes; })
+
+	let datesEnd = arr.map(function(i) {
+		let monthNames = ["Jan", "Feb", "Mar", "Apr", "May", "Jun",
+			"Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+		let date = new Date(i.timeRange[1]);
+		let day = date.getDate();
+		if (day < 10) day = "0" + day;
+		let hours = date.getHours();
+		if (hours < 10) hours = "0" + hours;
+		let minutes = date.getMinutes();
+		if (minutes < 10) minutes = "0" + minutes;
+		return monthNames[date.getMonth()] + " " + day + " " + hours + ":" + minutes; })
 
 	let date_format = d3.time.format("%b.%d.%Y %H:%M");
 
-	let y = d3.scale.linear()
-					.domain([0, d3.max(incomingBytesArr)])
-					.range([12, height - 12]);
 
-	let x = d3.scale.ordinal()
-					.domain(d3.range(0, incomingBytesArr.length))
-					.rangeBands([0, width]);
+	function tooltip(d, i, str) {
+		let text = datesStart[i] + " | " + datesEnd[i] + "<br>" + d + str;
+		return text;
+	}
 
-	let colors = d3.scale.linear()
-					.domain([0, incomingBytesArr.length])
-					.range(["#90ee90", "#30c230"]);
+	let tip = d3.tip()
+			.attr('class', 'd3-tip')
+			.html(function(d, i) { return tooltip(d, i, " bytes"); });
 
-	let canvas = d3.select("#chart").append("svg")
-					.attr("width", width)
-					.attr("height", height)
-					.style("background", "#f4f4f4");
+	function barChart() {
+		let y = d3.scale.linear()
+			.domain([0, d3.max(incomingBytesArr)])
+			.range([5, height - 30]);
 
-	let bars = 	canvas.selectAll("rect")
-					.data(incomingBytesArr)
-					.enter()
-					.append("rect")
-					.attr("x", function(d, i) { return x(i); })
-					.attr("y", height)
-					.attr("width", x.rangeBand())
-					.attr("height",0)
-					.style("fill", function(d, i) { return colors(d); })
-					.on("mouseover", function(d) {
-						tooltip.transition()
-					 		.style("opacity", 1)
+		let x = d3.scale.ordinal()
+			.domain(d3.range(0, incomingBytesArr.length))
+			.rangeBands([0, width]);
 
-						tooltip.html(d)
-							.style("left", (d3.event.pageX) + "px")
-							.style("top", (d3.event.pageY + "px"))
-						d3.select(this).style("opacity", 0.5)})
-					.on("mouseout", function(d) {
-						tooltip.transition()
-							.style("opacity", 0)
-						d3.select(this).style("opacity", 1)});
+		let colors = d3.scale.linear()
+			.domain([0, incomingBytesArr.length])
+			.range(["#ffc832", "#ffa144"]);
 
-	bars.transition()
-					.attr("height", function(d) { return y(d); })
-					.attr("y", function(d) { return height - y(d); })
-					.duration(animateDuration)
-					.delay(function(d, i) { return i * animateDelay; })
-					.ease("elastic")
+		let canvas = d3.select("#chart").append("svg")
+			.attr("width", width + margin.right + margin.left)
+			.attr("height", height + margin.top + margin.bottom)
+			.append("g")
+			.attr("transform", "translate("+margin.left+","+margin.top+")")
+			.attr("background", "white")
 
-	let vScale = d3.scale.linear()
-					.domain([0, d3.max(incomingBytesArr)])
-					.range([height, 0]);
+		let bars = 	canvas.selectAll("rect")
+			.data(incomingBytesArr)
+			.enter()
+			.append("rect")
+			.attr("x", function(d, i) { return x(i); })
+			.attr("y", height)
+			.attr("width", x.rangeBand())
+			.attr("height",0)
+			.style("fill", function(d, i) { return colors(d); })
+			.call(tip)
+			.on("mouseover", tip.show)
+			.on("mouseout", tip.hide);
 
-	let hScale = d3.scale.ordinal()
-					.domain(d3.range(0, incomingBytesArr.length))
-					.rangeBands([0, width]);
+		bars.transition()
+			.attr("height", function(d) { return y(d); })
+			.attr("y", function(d) { return height - y(d); })
+			.duration(animateDuration)
+			.delay(function(d, i) { return i * animateDelay; })
+			.ease("elastic")
 
-	// v Axis
-	let vAxis = d3.svg.axis()
-					.scale(vScale)
-					.orient("left")
-					.ticks(5)
-					.tickPadding(6);
 
-	// v Guide
-	let vGuide = d3.select("svg")
-					.append("g")
-						vAxis(vGuide)
-						vGuide.attr("transform", "translate(35, 10)")
-						vGuide.selectAll("path")
-						.style("fill", "none")
-						.style("stroke", "#000")
-						vGuide.selectAll("line")
-						.style("stroke", "#000")
 
-	let hAxis = d3.svg.axis()
-					.scale(vScale)
-					.orient("bottom")
-					.tickValues(hScale.domain().filter(function(d, i) { return !(i % (incomingBytesArr.length / 5)) }))
-	// v Guide
-	let hGuide = d3.select("svg")
-					.append("g")
-						hAxis(hGuide)
-						hGuide.attr("transform", "translate(35, 10)")
-						hGuide.selectAll("path")
-						.style("fill", "none")
-						.style("stroke", "#000")
-						hGuide.selectAll("line")
-						.style("stroke", "#000")
+		let vScale = d3.scale.linear()
+			.domain([0, d3.max(incomingBytesArr)])
+			.range([height - 5, 30]);
 
+		let vAxis = d3.svg.axis()
+			.scale(vScale)
+			.orient("left")
+			.ticks(4)
+			.tickFormat(d3.format("s"))
+			.tickPadding(5);
+
+		let vGuide = d3.select("svg")
+			.append("g")
+			vAxis(vGuide)
+			vGuide.attr("transform", "translate("+margin.left+", "+margin.top+")")
+			vGuide.selectAll("path")
+			.style("fill", "none")
+			.style("stroke", "white")
+			vGuide.selectAll("line")
+			.style("stroke", "white")
+			vGuide.selectAll("text")
+			.style("fill", "white")
+			.style("font", "11px sans-serif")
+	}
+
+
+
+	barChart();
 }
 
 buildChart(arr);

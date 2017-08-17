@@ -1,0 +1,58 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+<script src="http://d3js.org/d3.v3.min.js"></script>
+</head>
+<body>
+	<style>
+	/*.d3-tip {
+		background-color: hsla(197, 73%, 16%, 0.63);
+	 	padding: 4px;
+	 	text-align: center;
+		color: white;
+		font: 11px arial, sans-serif;
+	}*/
+	body {
+		background-color: #00B2A9;
+	}
+
+	.d3-tip {
+		position: absolute;
+		background: hsla(0, 0%, 0%, 0.64);
+		padding: 4px;
+		text-align: center;
+		font: 11px arial, sans-serif;
+		color: white;
+	}
+	.d3-tip:after, .d3-tip:before {
+		top: 100%;
+		left: 50%;
+		border: solid transparent;
+		content: " ";
+		height: 0;
+		width: 0;
+		position: absolute;
+		pointer-events: none;
+	}
+
+	.d3-tip:after {
+		border-color: rgba(136, 183, 213, 0);
+		border-top-color: hsla(0, 0%, 0%, 0.64) ;
+		border-width: 10px;
+		margin-left: -10px;
+	}
+	.d3-tip:before {
+		border-color: hsla(0, 0%, 0%, 0.64) ;
+		border-top-color: hsla(0, 0%, 0%, 0.64) ;
+		border-width: 0px;
+		margin-left: -16px;
+	}
+	</style>
+	<!-- <p>This is paragraph</p> -->
+	<!-- <script src=require.js></script> -->
+	<div id="chart"></div>
+	<script src=d3.tip.js></script>
+	<script src=script.js></script>
+	<!-- <script src=getjson.js></script> -->
+</body>
+</html>
