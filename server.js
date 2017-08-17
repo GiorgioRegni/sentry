@@ -160,7 +160,6 @@ function dateconvert(obj, cb){
 		Interval = miliseconds(0, 30);
 
 	bucketName = obj.bucket;
-	bucketName = 'test';
 	getRange(bucketName, Start, End, Interval, () => {
 		totalData = JSON.stringify(objArray);
 		/**
