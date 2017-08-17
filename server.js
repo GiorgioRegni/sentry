@@ -2,6 +2,8 @@ var express = require('express');
 var app = express();
 var path = require('path');
 var formidable = require("formidable");
+var aws4 = require('aws4');
+var http = require('http');
 //var d3 = require('d3');
 // var d3 = require('d3-node');
 //var jsdom = require('jsdom');
@@ -14,12 +16,13 @@ var formidable = require("formidable");
 //     res.sendFile(path.join(__dirname + '/file.html'));
 // });
 
-app.get('/', function(req, res) {
-    res.sendFile(path.join(__dirname + '/index.html'));
-});
 
 app.get('/script.js',function(req,res){
     res.sendFile(path.join(__dirname + '/script.js'));
+});
+
+app.get('/', function(req, res) {
+    res.sendFile(path.join(__dirname + '/index.html'));
 });
 
 app.get('/', function(req, res) {
@@ -45,9 +48,6 @@ app.post('/', function(req, res, next) {
 		fields[field] = value;
 	  })
 	  .on('end', function() {
-		console.log('-> post done');
-		//res.writeHead(200, {'content-type': 'text/plain'});
-		//res.end('received fields:\n\n '+util.inspect(fields));
 		console.log(fields);
 		dateconvert(fields);
 	  });
@@ -96,10 +96,6 @@ function getRange(bucketName, Start, End, Interval, cb)
 	var counter = 0;
 	var iterations;
 	var callLimit = 5;
-	if (typeof Interval != 'undefined')
-	{
-		Interval = miliseconds(0, 15);
-	}
 	var checkLimit = Math.floor((End - Start) / Interval);
 	if (checkLimit > callLimit)
 	{
@@ -128,8 +124,18 @@ function getRange(bucketName, Start, End, Interval, cb)
 
 function dateconvert(obj){
 	console.log(obj);
+	var Start;
+	var End;
 	var Start = new Date(obj.dateStart + 'T' + obj.timeStart).getTime();
 	var End = new Date(obj.dateEnd + 'T' + obj.timeEnd).getTime();
+	if (obj.hasOwnProperty('dataStart') == false || obj.hasOwnPropery('timeStart') == false)
+	{
+		Start = new Date(2017, 7, 1, 0, 0, 0, 0).getTime();
+	}
+	if (obj.hasOwnProperty('dataEnd') == false || obj.hasOwnPropery('timeEnd') == false)
+	{
+		End = new Date(2017, 9, 1, 0, 0, 0, 0).getTime();
+	}
 	var Interval;
 	if (obj.timeStamp == '15 min')
 		Interval = miliseconds(0, 15);
@@ -147,8 +153,17 @@ function dateconvert(obj){
 		Interval = miliseconds(360, 0);
 	else if (obj.timeStamp == '01 month')
 		Interval = miliseconds(720, 15);
-	const bucketName = obj.bucket;
+	else
+		Interval = miliseconds(0, 30);
+
+	bucketName = obj.bucket;
+	bucketName = 'test';
 	getRange(bucketName, Start, End, Interval, () => {
-		console.log(objArray);
+		var send = [];
+		for (var i = 0; i < objArray.length; i++)
+		{
+	 		send.push((JSON.parse(objArray[i]))[0]);
+		}
+		buildChart(send);
 	});
 }
