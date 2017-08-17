@@ -5,7 +5,6 @@ var http = require('http');
 var formidable = require("formidable");
 var app = express();
 const jsdom = require("jsdom");
-
 var totalData;
 
 app.get('/script.js',function(req,res){
@@ -53,6 +52,21 @@ app.post('/', function(req, res, next) {
 	form.parse(req);
 });
 
+app.get('/img/zenko-logo.png',function(req,res){
+    res.sendFile(path.join(__dirname + '/img/zenko-logo.png'));
+});
+
+app.get('/css/jquery.fullPage.css',function(req,res){
+    res.sendFile(path.join(__dirname + '/css/jquery.fullPage.css'));
+});
+
+app.get('/css/style.css',function(req,res){
+    res.sendFile(path.join(__dirname + '/css/style.css'));
+});
+
+app.get('/js/jquery.fullPage.min.js',function(req,res){
+    res.sendFile(path.join(__dirname + '/js/jquery.fullPage.min.js'));
+});
 
 var objArray = [];
 function callApi(bucketName, startTime, endTime, cb) {
@@ -94,7 +108,7 @@ function getRange(bucketName, Start, End, Interval, cb)
 {
 	var counter = 0;
 	var iterations;
-	var callLimit = 5;
+	var callLimit = 25;
 	var checkLimit = Math.floor((End - Start) / Interval);
 	if (checkLimit > callLimit)
 	{
@@ -123,18 +137,8 @@ function getRange(bucketName, Start, End, Interval, cb)
 
 function dateconvert(obj, cb){
 	console.log(obj);
-	var Start;
-	var End;
 	var Start = new Date(obj.dateStart + 'T' + obj.timeStart).getTime();
 	var End = new Date(obj.dateEnd + 'T' + obj.timeEnd).getTime();
-	if (obj.hasOwnProperty('dataStart') == false || obj.hasOwnPropery('timeStart') == false)
-	{
-		Start = new Date(2017, 7, 1, 0, 0, 0, 0).getTime();
-	}
-	if (obj.hasOwnProperty('dataEnd') == false || obj.hasOwnPropery('timeEnd') == false)
-	{
-		End = new Date(2017, 9, 1, 0, 0, 0, 0).getTime();
-	}
 	var Interval;
 	if (obj.timeStamp == '15 min')
 		Interval = miliseconds(0, 15);
