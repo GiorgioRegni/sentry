@@ -43,10 +43,7 @@ app.post('/', function(req, res, next) {
 	  .on('end', function() {
 		console.log(fields);
 		dateconvert(fields, (data) => {
-			console.log('Data', totalData);
-		//	res.json(totalData);
 			res.sendFile(path.join(__dirname + '/file.html'));
-			///res.redirect('/file.html');
 		});
 	  });
 	form.parse(req);
@@ -129,6 +126,7 @@ function getRange(bucketName, Start, End, Interval, cb)
 			objArray.push(result);
 			counter += 1;
 			if (counter == iterations) {
+				console.log("API Output", objArray.length)
 				cb(null, objArray);
 			} });
 		Next += Interval;
@@ -136,7 +134,6 @@ function getRange(bucketName, Start, End, Interval, cb)
 }
 
 function dateconvert(obj, cb){
-	console.log(obj);
 	var Start = new Date(obj.dateStart + 'T' + obj.timeStart).getTime();
 	var End = new Date(obj.dateEnd + 'T' + obj.timeEnd).getTime();
 	var Interval;
@@ -162,14 +159,6 @@ function dateconvert(obj, cb){
 	bucketName = obj.bucket;
 	getRange(bucketName, Start, End, Interval, () => {
 		totalData = JSON.stringify(objArray);
-		/**
-		var send = [];
-		for (var i = 0; i < objArray.length; i++)
-		{
-	 		send.push((JSON.parse(objArray[i]))[0]);
-		}
-		**/
 		cb(null, totalData);
-		//buildChart(send);
 	});
 }

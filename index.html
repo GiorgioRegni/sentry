@@ -82,7 +82,7 @@
 
                   <label for="start" class="d-block my-3">Start Time</label>
                   <input type="date" class="form-control d-block my-3" id="opt-date-start" name="dateStart">
-                  <input type="time" class="form-control" id="opt-start" name="timeStart" placeholder="Start Time">
+                  <input type="time" pattern="([0-1]{1}[0-9]{1}|20|21|22|23):[0-5]{1}[0-9]{1}" class="form-control" id="opt-start" name="timeStart" placeholder="Start Time">
 
                   <label class="d-block my-3">End Time</label>
                   <input type="date" class="form-control d-block my-3" id="opt-date-end" name="dateEnd">
@@ -91,7 +91,7 @@
                    <label></label>
 
                   <select class="form-control d-block my-3" name="timeStamp">
-                    <option selected>Time Stamp...</option>
+                    <option selected>Time Interval...</option>
                     <option>15 min</option>
                     <option>30 min</option>
                     <option>01 hr</option>
@@ -110,8 +110,6 @@
           </div>
         </div>
        </div>
-
-<!--  <script> d3.select("body").enter().append("input").attr("type","submit").attr("class","btn btn-info d-block my-3").attr("action", "input.html"); </script> -->
 
     <!-- ___________________ 3rd Page ___________________ -->
 
