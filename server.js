@@ -1,21 +1,12 @@
 var express = require('express');
-var app = express();
 var path = require('path');
-var formidable = require("formidable");
 var aws4 = require('aws4');
 var http = require('http');
-//var d3 = require('d3');
-// var d3 = require('d3-node');
-//var jsdom = require('jsdom');
-//var ejs = require('ejs');
+var formidable = require("formidable");
+var app = express();
+const jsdom = require("jsdom");
 
-// var document = jsdom.jsdom(),
-// 	svg = d3.select(document.body).append("svg");
-
-// app.get('/', function(req, res) {
-//     res.sendFile(path.join(__dirname + '/file.html'));
-// });
-
+var totalData;
 
 app.get('/script.js',function(req,res){
     res.sendFile(path.join(__dirname + '/script.js'));
@@ -26,12 +17,15 @@ app.get('/', function(req, res) {
 });
 
 app.get('/', function(req, res) {
-    res.redirect('/file.html');
+    res.redirect('/index.html');
 });
 
 app.listen(8080);
 console.log("Listening on Port 8080");
 
+app.get('/user', function(req, res, next) {
+  res.json(totalData);
+});
 
 app.post('/', function(req, res, next) {
 	var	form = new formidable.IncomingForm();
@@ -49,7 +43,12 @@ app.post('/', function(req, res, next) {
 	  })
 	  .on('end', function() {
 		console.log(fields);
-		dateconvert(fields);
+		dateconvert(fields, (data) => {
+			console.log('Data', totalData);
+		//	res.json(totalData);
+			res.sendFile(path.join(__dirname + '/file.html'));
+			///res.redirect('/file.html');
+		});
 	  });
 	form.parse(req);
 });
@@ -122,7 +121,7 @@ function getRange(bucketName, Start, End, Interval, cb)
 	}
 }
 
-function dateconvert(obj){
+function dateconvert(obj, cb){
 	console.log(obj);
 	var Start;
 	var End;
@@ -159,11 +158,15 @@ function dateconvert(obj){
 	bucketName = obj.bucket;
 	bucketName = 'test';
 	getRange(bucketName, Start, End, Interval, () => {
+		totalData = JSON.stringify(objArray);
+		/**
 		var send = [];
 		for (var i = 0; i < objArray.length; i++)
 		{
 	 		send.push((JSON.parse(objArray[i]))[0]);
 		}
-		buildChart(send);
+		**/
+		cb(null, totalData);
+		//buildChart(send);
 	});
 }
