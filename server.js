@@ -1,31 +1,36 @@
-var http = require('http');
-var fs = require('fs');
+var express = require('express');
+var app = express();
+var path = require('path');
 var formidable = require("formidable");
-var	util = require('util');
-var http = require('http');
-var aws4 = require('aws4');
+//var d3 = require('d3');
+// var d3 = require('d3-node');
+//var jsdom = require('jsdom');
+//var ejs = require('ejs');
 
-var server = http.createServer(function (req, res) {
-	if (req.method.toLowerCase() == 'get'){
-		displayForm(res);
-	} else if (req.method.toLowerCase() == 'post') {
-		processAllFieldsOfTheForm(req, res);
-	}
+// var document = jsdom.jsdom(),
+// 	svg = d3.select(document.body).append("svg");
+
+// app.get('/', function(req, res) {
+//     res.sendFile(path.join(__dirname + '/file.html'));
+// });
+
+app.get('/', function(req, res) {
+    res.sendFile(path.join(__dirname + '/index.html'));
 });
 
+app.get('/script.js',function(req,res){
+    res.sendFile(path.join(__dirname + '/script.js'));
+});
 
-function displayForm(res) {
-    fs.readFile('input.html', function (err, data) {
-        res.writeHead(200, {
-            'Content-Type': 'text/html',
-                'Content-Length': data.length
-        });
-        res.write(data);
-        res.end();
-    });
-}
+app.get('/', function(req, res) {
+    res.redirect('/file.html');
+});
 
-function processAllFieldsOfTheForm(req, res) {
+app.listen(8080);
+console.log("Listening on Port 8080");
+
+
+app.post('/', function(req, res, next) {
 	var	form = new formidable.IncomingForm();
 	fields = {};
 
@@ -41,32 +46,14 @@ function processAllFieldsOfTheForm(req, res) {
 	  })
 	  .on('end', function() {
 		console.log('-> post done');
-		res.writeHead(200, {'content-type': 'text/plain'});
-		res.end('received fields:\n\n '+util.inspect(fields));
+		//res.writeHead(200, {'content-type': 'text/plain'});
+		//res.end('received fields:\n\n '+util.inspect(fields));
 		console.log(fields);
 		dateconvert(fields);
 	  });
 	form.parse(req);
-	/**
-	form.parse(req, function (err, fields, files) {
-		//Store the data from the fields in your data store.
-        //The data store could be a file or database or any other store based
-        //on your application.
-        res.writeHead(200, {
-        	'Content-Type': 'text/plain'
-        });
-        res.write('Received the input:\n\n');
-        res.end(
-			//util.inspect({fields: fields});
-			out = res
-			//console.log("Hi")
-		);
-	});
-	**/
-}
+});
 
-server.listen(1185);
-console.log("server listening on 1185");
 
 var objArray = [];
 function callApi(bucketName, startTime, endTime, cb) {
@@ -121,7 +108,7 @@ function getRange(bucketName, Start, End, Interval, cb)
 	Interval = Math.ceil(Interval / 900000.0) * 900000;
 	var Next = Start + Interval - 1;
 	iterations = Math.ceil((End - Start) / Interval);
-	
+
 	console.log("Bucket Name", bucketName);
 	console.log("Interval", Interval);
 	console.log("Start", Start);

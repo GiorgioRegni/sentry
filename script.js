@@ -1,11 +1,3 @@
-/**
- * @Author: Anhelina Shulha <anhelinashulha>
- * @Date:   Aug-13-2017
- * @Email:  anhelina.shulha@gmail.com
- * @Filename: script.js
- * @Last modified by:   anhelinashulha
- * @Last modified time: Aug-16-2017
- */
 
 "use strict";
 
