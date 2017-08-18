@@ -1,19 +1,18 @@
-/**
- * @Author: Anhelina Shulha <anhelinashulha>
- * @Date:   Aug-14-2017
- * @Email:  anhelina.shulha@gmail.com
- * @Filename: script.js
- * @Last modified by:   anhelinashulha
- * @Last modified time: Aug-17-2017
- */
+
+
+
 
 var arr = [];
+
+/** request data from the server and parse it to graphs **/
 
 $(document).ready(function() {
 	$.getJSON('http://localhost:8080/user').done(function(data) {
 		fixdata(data);
 	})
 });
+
+/** Parsing JSON twice and sending it to /users for graphs **/
 
 function fixdata(data) {
 	var objArray = JSON.parse(data);
@@ -23,6 +22,9 @@ function fixdata(data) {
 	}
 	buildChart(arr);
 }
+
+
+/** charts builders **/
 
 function incBytesChart(incomingBytesArr, dates) {
 	const barChart = document.getElementById('incBytesChart');
