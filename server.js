@@ -7,6 +7,8 @@ var app = express();
 const jsdom = require("jsdom");
 var totalData;
 
+/** controllers to run files **/
+
 app.get('/script.js',function(req,res){
     res.sendFile(path.join(__dirname + '/script.js'));
 });
@@ -19,12 +21,16 @@ app.get('/', function(req, res) {
     res.redirect('/index.html');
 });
 
-app.listen(8080);
-console.log("Listening on Port 8080");
 
 app.get('/user', function(req, res, next) {
   res.json(totalData);
 });
+
+app.listen(8080);
+console.log("Listening on Port 8080");
+
+
+/** rendering data from form and posting it to file.html for graphs to parse **/
 
 app.post('/', function(req, res, next) {
 	var	form = new formidable.IncomingForm();
@@ -49,6 +55,9 @@ app.post('/', function(req, res, next) {
 	form.parse(req);
 });
 
+
+/** controllers to run html plugins **/
+
 app.get('/img/zenko-logo.png',function(req,res){
     res.sendFile(path.join(__dirname + '/img/zenko-logo.png'));
 });
@@ -65,6 +74,8 @@ app.get('/js/jquery.fullPage.min.js',function(req,res){
     res.sendFile(path.join(__dirname + '/js/jquery.fullPage.min.js'));
 });
 
+
+/** call to service api, with authentication and parsing parameters from the form **/
 var objArray = [];
 function callServiceApi(name, accessKeyId, secretAccessKey, startTime, endTime, cb) {
 	console.log("Service Api called");
@@ -93,6 +104,8 @@ function callServiceApi(name, accessKeyId, secretAccessKey, startTime, endTime, 
 	request.write(requestBody);
 	request.end();
 }
+
+/** call to bucket api, with authentication and parsing parameters from the form **/
 
 function callBucketApi(name, accessKeyId, secretAccessKey, startTime, endTime, cb) {
 	console.log("Bucket Api called");
@@ -126,6 +139,9 @@ function miliseconds(hrs,min)
 {
     return((hrs*60*60+min*60)*1000);
 }
+
+
+/** range to caluclate the interval and make sure doesn't exceed the api call limit **/
 
 function getRange(name, accessKeyId, secretAccessKey, option, Start, End, Interval, cb) {
 	var counter = 0;
@@ -175,6 +191,8 @@ function getRange(name, accessKeyId, secretAccessKey, option, Start, End, Interv
 		}
 	}
 }
+
+/** time conversions from the timeStamp parameter from form **/
 
 function dateconvert(obj, cb){
 	const accessKeyId = obj.accesskey;
