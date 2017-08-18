@@ -3,13 +3,13 @@
 
 ## About UTAPI
 
-UTAPI is a Service Utilization API for tracking resource usage and metrics reporting.
+[UTAPI](https://github.com/scality/utapi) is a Service Utilization API for [Zenko Cloud Server](https://github.com/scality/S3). It provides metrics for resource usage.
 
-For more information, please refer to the official GitHub repository found [here](https://github.com/scality/utapi).
+This project provides a user-interface for UTAPI.
 
 ## The UI
 
-<img src="https://github.com/JibranKalia/zenkoders/resources/zenko-charts.png" width="300">
+![42 Logo](resources/zenko-charts.png)
 
 ## Installation and Setup
 
