@@ -24,6 +24,7 @@ console.log("Listening on Port 8080");
 
 app.get('/user', function(req, res, next) {
   res.json(totalData);
+  console.log(totalData);
 });
 
 app.post('/', function(req, res, next) {
@@ -66,13 +67,38 @@ app.get('/js/jquery.fullPage.min.js',function(req,res){
 });
 
 var objArray = [];
-function callApi(bucketName, startTime, endTime, cb) {
-
-	const accessKeyId = 'accessKey1';
-	const secretAccessKey = 'verySecretKey1';
+function callServiceApi(name, accessKeyId, secretAccessKey, startTime, endTime, cb) {
 	const token = '';
 	const requestBody = JSON.stringify({
-		buckets: [bucketName],
+		service: ['S3'],
+		timeRange: [startTime, endTime],
+	});
+	const header = {
+		host: 'localhost',
+		port: 8100,
+		method: 'POST',
+		service: 's3',
+		path: '/service?Action=ListMetrics',
+		signQuery: false,
+		body: requestBody,
+	};
+	const credentials = { accessKeyId, secretAccessKey, token };
+	const options = aws4.sign(header, credentials);
+	const request = http.request(options, response => {
+		const body = [];
+		response.on('data', chunk => body.push(chunk));
+		response.on('end', () => cb(null, `${body.join('')}`));
+	});
+	request.on('error', e => process.stdout.write(`error: ${e.message}\n`));
+	request.write(requestBody);
+	request.end();
+}
+
+function callBucketApi(name, accessKeyId, secretAccessKey, startTime, endTime, cb) {
+
+	const token = '';
+	const requestBody = JSON.stringify({
+		buckets: [name],
 		timeRange: [startTime, endTime],
 	});
 	const header = {
@@ -101,8 +127,7 @@ function miliseconds(hrs,min)
     return((hrs*60*60+min*60)*1000);
 }
 
-function getRange(bucketName, Start, End, Interval, cb)
-{
+function getRange(name, accessKeyId, secretAccessKey, option, Start, End, Interval, cb) {
 	var counter = 0;
 	var iterations;
 	var callLimit = 25;
@@ -115,25 +140,50 @@ function getRange(bucketName, Start, End, Interval, cb)
 	var Next = Start + Interval - 1;
 	iterations = Math.ceil((End - Start) / Interval);
 
-	console.log("Bucket Name", bucketName);
+	console.log("Name", name);
 	console.log("Interval", Interval);
 	console.log("Start", Start);
 	console.log("End", End);
+	console.log("Option", option);
 
-	for (var i = Start; i < End; i += Interval)
+	if (option == 0)
 	{
-		callApi(bucketName, i, Next, function(err, result) {
-			objArray.push(result);
-			counter += 1;
-			if (counter == iterations) {
-				console.log("API Output", objArray.length)
-				cb(null, objArray);
-			} });
-		Next += Interval;
+		for (var i = Start; i < End; i += Interval)
+		{
+			callServiceApi(name, accessKeyId, secretAccessKey, i, Next, function(err, result) {
+				objArray.push(result);
+				counter += 1;
+				if (counter == iterations) {
+					console.log("API Output", objArray.length)
+					cb(null, objArray);
+				} });
+				Next += Interval;
+			}
+	}
+	else
+	{
+		for (var i = Start; i < End; i += Interval)
+		{
+			callBucketApi(name, accessKeyId, secretAccessKey, i, Next, function(err, result) {
+				objArray.push(result);
+				counter += 1;
+				if (counter == iterations) {
+					console.log("API Output", objArray.length)
+					cb(null, objArray);
+				} });
+				Next += Interval;
+		}
 	}
 }
 
 function dateconvert(obj, cb){
+	const accessKeyId = obj.accesskey;
+	const secretAccessKey = obj.secretkey;
+	var option;
+	if (obj.type == 'Service Level')
+		option = 0;
+	else
+		option = 1;
 	var Start = new Date(obj.dateStart + 'T' + obj.timeStart).getTime();
 	var End = new Date(obj.dateEnd + 'T' + obj.timeEnd).getTime();
 	var Interval;
@@ -155,9 +205,8 @@ function dateconvert(obj, cb){
 		Interval = miliseconds(720, 15);
 	else
 		Interval = miliseconds(0, 30);
-
-	bucketName = obj.bucket;
-	getRange(bucketName, Start, End, Interval, () => {
+	var name = obj.name;
+	getRange(name, accessKeyId, secretAccessKey, option, Start, End, Interval, () => {
 		totalData = JSON.stringify(objArray);
 		cb(null, totalData);
 	});

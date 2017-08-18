@@ -74,15 +74,18 @@
          <div class="container col-md-6 mb-3">
             <div class="form-group">
                 <form action=""  method="post" enctype="multipart/form-data" class="form-group" name="startForm">
-                  <label></label>
-                    <input class="form-control" name="bucket" placeholder="Type Bucket name...">
-
-                    </select>
-                  <label></label>
+                    <input class="form-control" name="accesskey" placeholder="Enter Access Key ..." required>
+                    <input class="form-control d-block my-3" type="password" name="secretkey" placeholder="Enter Secret Key ..." required>
+				<select class="form-control" name="type">
+					<option selected>Choose Level ...</option>
+					<option>Service Level</option>
+					<option>Bucket Level</option>
+				</select>
+                    <input class="form-control d-block my-3" name="name" placeholder="Type Name...">
 
                   <label for="start" class="d-block my-3">Start Time</label>
                   <input type="date" class="form-control d-block my-3" id="opt-date-start" name="dateStart">
-                  <input type="time" pattern="([0-1]{1}[0-9]{1}|20|21|22|23):[0-5]{1}[0-9]{1}" class="form-control" id="opt-start" name="timeStart" placeholder="Start Time">
+                  <input type="time" class="form-control" id="opt-start" name="timeStart" placeholder="Start Time">
 
                   <label class="d-block my-3">End Time</label>
                   <input type="date" class="form-control d-block my-3" id="opt-date-end" name="dateEnd">
