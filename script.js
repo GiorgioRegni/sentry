@@ -1,7 +1,4 @@
 
-
-
-
 var arr = [];
 
 /** request data from the server and parse it to graphs **/
@@ -25,6 +22,8 @@ function fixdata(data) {
 
 
 /** charts builders **/
+
+/** incoming bytes chart **/
 
 function incBytesChart(incomingBytesArr, dates) {
 	const barChart = document.getElementById('incBytesChart');
@@ -55,6 +54,7 @@ function incBytesChart(incomingBytesArr, dates) {
 					fontSize: 11,
 					beginAtZero: true,
 					userCallback: function(value, index, values) {
+						/** value convertion **/
 						if (value >= 1000000000000) {
 							return value / 1000000000000 + 'T';
 						} else if (value >= 1000000000) {
@@ -76,6 +76,8 @@ function incBytesChart(incomingBytesArr, dates) {
 					color: 'hsla(0, 0%, 75%, 0.84)',
 					lineWidth: 0.8 }}]}}});
 }
+
+/** storage utilized chart **/
 
 function storUtilChart(storageUtilizedArr, dates) {
 	const ctx = document.getElementById('storageUtilChart');
@@ -110,6 +112,7 @@ function storUtilChart(storageUtilizedArr, dates) {
 						fontSize: 11,
 						beginAtZero: true,
 						userCallback: function(value, index, values) {
+							/** value convertion **/
 							if (value >= 1000000000000) {
 								return value / 1000000000000 + 'T';
 							} else if (value >= 1000000000) {
@@ -132,6 +135,8 @@ function storUtilChart(storageUtilizedArr, dates) {
 					color: 'hsla(0, 0%, 75%, 0.84)',
 					lineWidth: 0.8 }}]}}});
 }
+
+/** number of objects chart **/
 
 function numObjectsChart(numberOfObjectsArr, dates) {
 	const ctx = document.getElementById('numOfObjectsChart');
@@ -165,6 +170,7 @@ function numObjectsChart(numberOfObjectsArr, dates) {
 						fontSize: 11,
 						beginAtZero: true,
 						userCallback: function(value, index, values) {
+							/** value convertion **/
 							if (value >= 1000000000000) {
 								return value / 1000000000000 + 'T';
 							} else if (value >= 1000000000) {
@@ -197,6 +203,8 @@ function buildChart(arr) {
 
 	let numberOfObjectsArr = arr.map(function(i) { return i.numberOfObjects[1]; });
 
+	/** creating labels  in format "MMM DD HH:mm | MMM DD HH:mm"**/
+
 	let dates = arr.map(function(i) {
 		let monthNames = ["Jan", "Feb", "Mar", "Apr", "May", "Jun",
 			"Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
@@ -221,6 +229,7 @@ function buildChart(arr) {
 
 		return dateStart + " | " + dateEnd; })
 
+	/** building charts **/
 	incBytesChart(incomingBytesArr, dates);
 	storUtilChart(storageUtilizedArr, dates);
 	numObjectsChart(numberOfObjectsArr, dates);
