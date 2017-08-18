@@ -2,17 +2,6 @@
 Primary style
 -------------------------------- */
 
-/*html * {
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-}
-
-*, *:after, *:before {
-  -webkit-box-sizing: border-box;
-  -moz-box-sizing: border-box;
-  box-sizing: border-box;
-}*/
-
 body {
   font-size: 100%;
   font-family: "Convergence", "Roboto", sans-serif;
@@ -20,19 +9,11 @@ body {
   background-color: white;
 }
 
-/*body, html {
-  height: 100%;
-}*/
-
 a {
 	text-decoration: none;
   outline: none;
  	color: #a6989a;
 }
-
-/*h1 {
-	font-family: "Droid Sans";
-}*/
 
 /* --------------------------------
 Modules
@@ -125,59 +106,3 @@ Second Page
 .github-icon a:active {
   color:#7fe0d9;
 }
-
-/* --------------------------------
-Trash
---------------------------------
-
-.credits span {
-  display: inline-block;
-}
-
-/*.cd-container {
-   this class is used to give a max-width to the element it is applied to, and center it horizontally when it reaches that max-width
-  width: 90%;
-  max-width: 768px;
-  margin: 0 auto;
-}
-
-/*.cd-container::after {
-   clearfix
-  content: '';
-  display: table;
-  clear: both;
-}*/
-/*
-.cd-main-content {
-   you need to assign a min-height to the main content so that the children can inherit it
-  min-height: 90%;
-    height: 100%;
-    position: relative;
-    z-index: 1;
-}*/
-/*
-.cd-scrolling-bg {
-  position: relative;
-  min-height: 90%;
-  padding: 4em 0;
-  line-height: 1.6;
-  box-shadow: 0 0 50px rgba(0, 0, 0, 0.5);
-  z-index: 2;
-}*/
-
-
-
-/*@media only screen and (min-width: 480px) {*/
-  /*.cd-scrolling-bg {*/
-    /*padding: 8em 0;*/
-    /*font-size: 20px;*/
-    /*font-size: 1.25rem;*/
-    /*line-height: 2;*/
-    /*font-weight: 300;*/
-  /*}*/
-/*}*/
-
-/*.main-title {
-  margin-top: 200px;
-}
-*/
