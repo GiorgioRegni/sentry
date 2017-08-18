@@ -106,9 +106,11 @@ Second Page
 .credits {
   /*position: relative;*/
   text-align: center;
+  font-size: 230%;
 }
 
 .github-icon {
+  padding-top: 30px;
   text-align: center;
 }
 
