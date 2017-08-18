@@ -34,29 +34,35 @@ function incBytesChart(incomingBytesArr, dates) {
 		datasets: [{
 			label: 'bytes',
 			data: incomingBytesArr,
-			backgroundColor: '#ffc832',
-			borderColor: '#ffc832',
-			borderWidth: 1 }]},
+			backgroundColor: 'hsla(44, 100%, 60%, 0.70)',
+			borderColor: 'hsla(44, 100%, 40%, 1)',
+			borderWidth: 2 }]},
 
 	options: {
 		responsive: true,
 		title:{
 			display: true,
 			text:'incoming bytes',
-		 	fontColor: "#ededed" },
+		 	fontColor: "#424242" },
 		legend: {
 			display: false },
 		scales: {
 			yAxes: [{
 				ticks: {
-					fontColor: "#ededed",
+					fontColor: "#f",
 					fontSize: 11,
 					beginAtZero: true,
 					userCallback: function(value, index, values) {
-						if (value >= 1000000) {
+						if (value >= 1000000000000) {
+							return value / 1000000000000 + 'T';
+						} else if (value >= 1000000000) {
+							return value / 1000000000 + 'G';
+						} else if (value >= 1000000) {
 							return value / 1000000 + 'M';
 						} else if (value >= 1000) {
 							return value / 1000 + 'k';
+						} else if (value < 10) {
+							return value.toPrecision(2);
 						}
 						return value; }},
 				gridLines: {
@@ -69,7 +75,7 @@ function incBytesChart(incomingBytesArr, dates) {
 					lineWidth: 0.8 }}]}}});
 }
 
-function storUtilChart(storageUtilizedArr, numberOfObjectsArr, dates) {
+function storUtilChart(storageUtilizedArr, dates) {
 	const ctx = document.getElementById('storageUtilChart');
 	let chart = new Chart(ctx, {
 	type: 'line',
@@ -77,75 +83,108 @@ function storUtilChart(storageUtilizedArr, numberOfObjectsArr, dates) {
 	data: {
 		labels: dates,
 		datasets: [{
-			label: 'storage utilized',
+			label: 'storage utilized (bytes)',
 			data: storageUtilizedArr,
-			yAxisID: "y-axis-1",
-			backgroundColor: 'hsla(59, 81%, 51%, 0.60)',
-			borderColor: 'hsla(59, 81%, 51%, 0.60)'
-			},{
-			label: '# of objects',
-			data: numberOfObjectsArr,
-			yAxisID: "y-axis-2",
-			backgroundColor: "hsla(328, 81%, 51%, 0.70)",
-			borderColor: 'hsla(328, 81%, 51%, 0.70)' }]},
+			backgroundColor: 'hsla(177, 100%, 35%, 0.70)',
+			borderColor: 'hsla(177, 100%, 25%, 1)'
+			}]},
 
 	options: {
 		responsive: true,
 		stacked: false,
 		title:{
 			display: true,
-			text:'storage utilized and number of objects',
-		 	fontColor: "#ededed" },
+			text:'storage utilized',
+		 	fontColor: "#424242" },
 		legend: {
-			onClick: (e) => e.stopPropagation(),
-			labels: {
-				boxWidth: 11,
-				fontColor: '#ededed'
-			}},
+			display: false },
 		scales: {
 			yAxes: [{
 				type: "linear",
 					display: true,
 					position: "left",
-					id: "y-axis-1",
 					ticks: {
-						fontColor: "#ededed",
+						fontColor: "#424242",
 						fontSize: 11,
 						beginAtZero: true,
 						userCallback: function(value, index, values) {
-							if (value >= 1000000) {
+							if (value >= 1000000000000) {
+								return value / 1000000000000 + 'T';
+							} else if (value >= 1000000000) {
+								return value / 1000000000 + 'G';
+							} else if (value >= 1000000) {
 								return value / 1000000 + 'M';
 							} else if (value >= 1000) {
 								return value / 1000 + 'k';
+							} else if (value < 10) {
+								return value.toPrecision(2);
 							}
 							return value; }},
 					gridLines: {
 						color: 'hsla(0, 0%, 75%, 0.84)',
 						lineWidth: 0.8
-				}}, {
-				type: "linear",
-					display: true,
-					position: "right",
-					id: "y-axis-2",
-					ticks: {
-						fontColor: "#ededed",
-						fontSize: 11,
-						beginAtZero: true,
-						userCallback: function(value, index, values) {
-							if (value >= 1000000) {
-								return value / 1000000 + 'M';
-							} else if (value >= 1000) {
-								return value / 1000 + 'k';
-							}
-							return value; }},
-					gridLines: {
-						 drawOnChartArea: false
-					}}],
+				}}],
 			xAxes: [{
 				display: false,
 				gridLines: {
 					color: 'hsla(0, 0%, 75%, 0.84)',
 					lineWidth: 0.8 }}]}}});
+}
+
+function numObjectsChart(numberOfObjectsArr, dates) {
+	const ctx = document.getElementById('numOfObjectsChart');
+	let chart = new Chart(ctx, {
+		type: 'line',
+
+		data: {
+			labels: dates,
+			datasets: [{
+				label: 'number of objects',
+				data: numberOfObjectsArr,
+				backgroundColor: "hsla(328, 81%, 51%, 0.70)",
+				borderColor: 'hsla(328, 81%, 41%, 1)' }]},
+
+		options: {
+			responsive: true,
+			stacked: false,
+			title:{
+				display: true,
+				text:'number of objects',
+				fontColor: "#424242" },
+			legend: {
+				display: false },
+			scales: {
+				yAxes: [{
+					type: "linear",
+					display: true,
+					position: "left",
+					ticks: {
+						fontColor: "#424242",
+						fontSize: 11,
+						beginAtZero: true,
+						userCallback: function(value, index, values) {
+							if (value >= 1000000000000) {
+								return value / 1000000000000 + 'T';
+							} else if (value >= 1000000000) {
+								return value / 1000000000 + 'G';
+							} else if (value >= 1000000) {
+								return value / 1000000 + 'M';
+							} else if (value >= 1000) {
+								return value / 1000 + 'k';
+							} else if (value < 10) {
+								return value.toPrecision(2);
+							}
+							return value; }},
+						gridLines: {
+							color: 'hsla(0, 0%, 75%, 0.84)',
+							lineWidth: 0.8
+					}}],
+					xAxes: [{
+						display: false,
+						gridLines: {
+							color: 'hsla(0, 0%, 75%, 0.84)',
+							lineWidth: 0.8 }}]}}});
+
 }
 
 function buildChart(arr) {
@@ -181,5 +220,6 @@ function buildChart(arr) {
 		return dateStart + " | " + dateEnd; })
 
 	incBytesChart(incomingBytesArr, dates);
-	storUtilChart(storageUtilizedArr, numberOfObjectsArr, dates);
+	storUtilChart(storageUtilizedArr, dates);
+	numObjectsChart(numberOfObjectsArr, dates);
 }

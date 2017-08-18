@@ -130,7 +130,7 @@ function miliseconds(hrs,min)
 function getRange(name, accessKeyId, secretAccessKey, option, Start, End, Interval, cb) {
 	var counter = 0;
 	var iterations;
-	var callLimit = 5;
+	var callLimit = 10;
 	var checkLimit = Math.floor((End - Start) / Interval);
 	if (checkLimit > callLimit)
 	{
