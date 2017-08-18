@@ -144,7 +144,7 @@ Member | Job
 [Tomas Bisi] | Back-end developer, designer
 
 ## Acknowledgment
-#### Special thanks to [Bennet Buchanan](https://github.com/bennettbuchanan)
+#### Special thanks to [Bennett Buchanan](https://github.com/bennettbuchanan)
 
 [Anhelina Shulha]: (https://github.com/angieshu)
 [Giacomo Guiulfo]: (https://github.com/giacomoguiulfo)
