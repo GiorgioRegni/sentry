@@ -24,7 +24,6 @@ console.log("Listening on Port 8080");
 
 app.get('/user', function(req, res, next) {
   res.json(totalData);
-  console.log(totalData);
 });
 
 app.post('/', function(req, res, next) {
@@ -68,9 +67,10 @@ app.get('/js/jquery.fullPage.min.js',function(req,res){
 
 var objArray = [];
 function callServiceApi(name, accessKeyId, secretAccessKey, startTime, endTime, cb) {
+	console.log("Service Api called");
 	const token = '';
 	const requestBody = JSON.stringify({
-		service: ['S3'],
+		service: ['s3'],
 		timeRange: [startTime, endTime],
 	});
 	const header = {
@@ -95,7 +95,7 @@ function callServiceApi(name, accessKeyId, secretAccessKey, startTime, endTime, 
 }
 
 function callBucketApi(name, accessKeyId, secretAccessKey, startTime, endTime, cb) {
-
+	console.log("Bucket Api called");
 	const token = '';
 	const requestBody = JSON.stringify({
 		buckets: [name],
@@ -207,6 +207,7 @@ function dateconvert(obj, cb){
 		Interval = miliseconds(0, 30);
 	var name = obj.name;
 	getRange(name, accessKeyId, secretAccessKey, option, Start, End, Interval, () => {
+		console.log(objArray);
 		totalData = JSON.stringify(objArray);
 		cb(null, totalData);
 	});
