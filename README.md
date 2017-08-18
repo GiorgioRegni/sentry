@@ -1,5 +1,5 @@
 # utapi-ui
-##### A web user-interface made for Zenko's Hackathon
+#### A web user-interface made for Zenko's Hackathon
 
 ## About UTAPI
 
@@ -13,7 +13,7 @@ This project provides a user-interface for UTAPI.
 
 ## Installation and Setup
 
-Before starting, install the following packages:
+#### Dependencies:
 
 * node v6.9.5
 * npm 3.10.10
@@ -30,7 +30,7 @@ git checkout 42-hackathon-utapi && \
 npm i
 ```
 
-Open S3's `config.json` file and add the following:
+Add the following to the `config.json`:
 
 ```
 "localCache": {
@@ -46,7 +46,7 @@ Open S3's `config.json` file and add the following:
 }
 ```
 
-Start Zenko S3 server in a new shell (eventually use Docker container instead):
+Start Zenko S3 server in a new shell:
 
 ```
 S3BACKEND=file npm start
@@ -142,6 +142,9 @@ Member | Job
 [Giacomo Guiulfo] | Front-end developer
 [Jibran Kalia] | Back-end developer
 [Tomas Bisi] | Back-end developer, designer
+
+## Acknowledgment
+#### Special thanks to [Bennet Buchanan](https://github.com/bennettbuchanan)
 
 [Anhelina Shulha]: (https://github.com/angieshu)
 [Giacomo Guiulfo]: (https://github.com/giacomoguiulfo)
