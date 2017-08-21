@@ -138,7 +138,7 @@ on the url bar.
 ## TEAM
 Member | Job
 ------------ | -------------
-[Anhelina Shulha(https://github.com/angieshu) | Front-end developer
+[Anhelina Shulha](https://github.com/angieshu) | Front-end developer
 [Giacomo Guiulfo](https://github.com/giacomoguiulfo) | Front-end developer
 [Jibran Kalia](https://github.com/JibranKalia) | Back-end developer
 [Tomas Bisi](https://github.com/tomasbisi) | Back-end developer, designer
