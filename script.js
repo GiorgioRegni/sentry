@@ -3,6 +3,7 @@ var arr = [];
 
 /** request data from the server and parse it to graphs **/
 
+
 $(document).ready(function() {
 	$.getJSON('http://localhost:8080/user').done(function(data) {
 		fixdata(data);
