@@ -85,7 +85,7 @@ function callServiceApi(name, accessKeyId, secretAccessKey, startTime, endTime, 
 		timeRange: [startTime, endTime],
 	});
 	const header = {
-		host: 'localhost',
+		host: 's3',
 		port: 8100,
 		method: 'POST',
 		service: 's3',
@@ -115,7 +115,7 @@ function callBucketApi(name, accessKeyId, secretAccessKey, startTime, endTime, c
 		timeRange: [startTime, endTime],
 	});
 	const header = {
-		host: 'localhost',
+		host: 's3',
 		port: 8100,
 		method: 'POST',
 		service: 's3',
