@@ -1,4 +1,4 @@
-# utapi-ui
+# sentry
 #### A web user-interface made for Zenko's Hackathon
 
 ## About UTAPI
